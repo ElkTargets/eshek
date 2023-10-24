@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8662731648573597875}
   - component: {fileID: 4725759396633925732}
   - component: {fileID: 3130488666722785782}
+  - component: {fileID: -3185714385924823434}
   m_Layer: 0
   m_Name: knight_black
   m_TagString: Untagged
@@ -106,3 +107,15 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300034, guid: 7b1ebbee2001ef74887110b41491763f, type: 3}
+--- !u!114 &-3185714385924823434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8757058357879208292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95f5f64259284c9b92e073c6863d25c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

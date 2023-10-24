@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1401412280844913332}
   - component: {fileID: 2861453689973150489}
   - component: {fileID: 7632454686117478074}
+  - component: {fileID: 2217155742243971134}
   m_Layer: 0
   m_Name: knight_white
   m_TagString: Untagged
@@ -106,3 +107,15 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300034, guid: 7b1ebbee2001ef74887110b41491763f, type: 3}
+--- !u!114 &2217155742243971134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3498098818995154567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95f5f64259284c9b92e073c6863d25c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5705054740825857772}
   - component: {fileID: 4988014382693260575}
   - component: {fileID: 7678853807995557210}
+  - component: {fileID: -2987059420418094216}
   m_Layer: 0
   m_Name: pawn_white
   m_TagString: Untagged
@@ -106,3 +107,15 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300036, guid: 7b1ebbee2001ef74887110b41491763f, type: 3}
+--- !u!114 &-2987059420418094216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2322599288576436009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95f5f64259284c9b92e073c6863d25c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

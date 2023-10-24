@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2801985540498946644}
   - component: {fileID: 2479174349727893036}
   - component: {fileID: 2315951861220101496}
+  - component: {fileID: 3990114749705486737}
   m_Layer: 0
   m_Name: rook_black
   m_TagString: Untagged
@@ -106,3 +107,15 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300040, guid: 7b1ebbee2001ef74887110b41491763f, type: 3}
+--- !u!114 &3990114749705486737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9097198170794463818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95f5f64259284c9b92e073c6863d25c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

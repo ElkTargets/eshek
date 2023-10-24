@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Piece {
@@ -7,5 +8,7 @@ public abstract class Piece {
     protected Piece(Color color) {
         Color = color;
     }
-    
+
+    public abstract List<Vector2Int> PossibleMovement(Piece[,] matrix);
+
 }
