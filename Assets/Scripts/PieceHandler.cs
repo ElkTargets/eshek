@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -8,12 +9,10 @@ public class PieceHandler : MonoBehaviour {
     
     private Vector3 _initialPosition;
     private static bool _pieceSelected;
-    private Color _originalColor;
+    public Color originalColor;
 
-    private void Awake() {
-        Vector3 localPosition = transform.position;
-        coordinate = new Vector2Int((int)localPosition.x, (int)localPosition.z);
-        _originalColor = GetComponent<MeshRenderer>().material.color;
+    private void Start() { 
+        coordinate = new Vector2Int((int)transform.localPosition.x, (int)transform.localPosition.z);
     }
 
     private void OnMouseOver() {
@@ -34,9 +33,14 @@ public class PieceHandler : MonoBehaviour {
 
         if (Input.GetButtonDown("Fire2"))
         {
-            GetComponent<MeshRenderer>().material.color = _originalColor;
+            GetComponent<MeshRenderer>().material.color = originalColor;
             GameManager.Instance.SelectedPiece = null;
             GameManager.Instance.canSelectPiece = true;
         }
+    }
+
+    private void OnDestroy()
+    {
+        Destroy(this.gameObject);
     }
 }
