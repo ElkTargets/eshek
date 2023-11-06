@@ -16,6 +16,23 @@ public class PieceHandler : MonoBehaviour {
     }
 
     private void OnMouseOver() {
+        if (GameManager.Instance.WhiteTurn)
+        {
+            if (!this.gameObject.CompareTag("White"))
+            {
+                return;
+            }
+        }
+        else
+        {
+            if (!GameManager.Instance.WhiteTurn)
+            {
+                if (!this.gameObject.CompareTag("Black"))
+                {
+                    return;
+                }
+            }
+        }
         if (Input.GetButtonDown("Fire1") && GameManager.Instance.canSelectPiece) {
             GameManager.Instance.canSelectPiece = false;
             Debug.Log("Selected : " + gameObject);

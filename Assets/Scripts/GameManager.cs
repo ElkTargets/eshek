@@ -21,7 +21,8 @@ public class GameManager : MonoBehaviourSingleton<GameManager> {
     public GameObject BlackQueenPrefab;
     public GameObject WhitePawnPrefab;
     public GameObject BlackPawnPrefab;
-    
+
+    public bool WhiteTurn;
     public bool canSelectPiece;
     public PieceHandler SelectedPiece { get; set; }
     public CellHandler SelectedCell { get; set; }
@@ -45,6 +46,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager> {
         cellsList = new List<CellHandler>(cellsParent.GetComponentsInChildren<CellHandler>());
         DisplayMatrix();
         canSelectPiece = true;
+        WhiteTurn = true;
     }
 
     private void DisplayMatrix() {
@@ -111,12 +113,22 @@ public class GameManager : MonoBehaviourSingleton<GameManager> {
         Vector2Int pieceCoord = pieceHandler.coordinate;
         if (Matrix[cellCoord.x, cellCoord.y] != null)
         {
+            //manger
             if (Matrix[cellCoord.x, cellCoord.y].Color != Matrix[pieceCoord.x, pieceCoord.y].Color)
             {
-                //Destroy(Matrix[cellCoord.x, cellCoord.y]);
+                Matrix[cellCoord.x, cellCoord.y] = null;
+            }
+            //move impossible
+            else
+            {
+                SelectedPiece.gameObject.GetComponent<MeshRenderer>().material.color = pieceHandler.originalColor;
+                SelectedCell.gameObject.GetComponent<MeshRenderer>().material.color = Color.white;
+                SelectedPiece = null;
+                SelectedCell = null;
+                canSelectPiece = true;
+                return;
             }
         }
-        
         Matrix[cellCoord.x, cellCoord.y] = Matrix[pieceCoord.x, pieceCoord.y];
         GameObject piecePrefab = SelectedPiece.gameObject;
         Destroy(piecePrefab);
@@ -127,5 +139,18 @@ public class GameManager : MonoBehaviourSingleton<GameManager> {
         SelectedCell.gameObject.GetComponent<MeshRenderer>().material.color = Color.white;
         Debug.Log(Matrix[cellCoord.x,cellCoord.y]);
         Matrix[pieceCoord.x, pieceCoord.y] = null;
+        foreach (Transform child in piecesParent)
+        {
+            Destroy(child.gameObject);
+        }
+        DisplayMatrix();
+        if (WhiteTurn)
+        {
+            WhiteTurn = false;
+        }
+        else if (!WhiteTurn)
+        {
+            WhiteTurn = true;
+        }
     }
 }
