@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Pieces;
 using UnityEngine;
@@ -26,10 +27,12 @@ public class GameManager : MonoBehaviourSingleton<GameManager> {
     public bool canSelectPiece;
     public PieceHandler SelectedPiece { get; set; }
     public CellHandler SelectedCell { get; set; }
+    public List<CellHandler> PossibleCells { get; set; }
 
 
     private void Awake()
     {
+        PossibleCells = new List<CellHandler>();
         // Remplir matrice
         Matrix = new Piece[8, 8]
         { 
@@ -60,6 +63,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager> {
                 if (piecePrefab) {
                     GameObject instantiate = Instantiate(piecePrefab, piecesParent);
                     instantiate.transform.localPosition = position;
+                    instantiate.GetComponent<PieceHandler>().Setup(current);
                 }
             }
         }
@@ -92,30 +96,38 @@ public class GameManager : MonoBehaviourSingleton<GameManager> {
     }
     
     private void Update() {
+        if (SelectedPiece)
+        {
+            EnableCells(SelectedPiece.Piece.PossibleMovement(Matrix));
+        }
         if (SelectedPiece && SelectedCell) {
-            //Debug.Log(SelectedPiece.coordinate + " = Original Piece Coord");
-            //Debug.Log(SelectedCell.cellCoordinates + " = Original Cell Coord");
+            
             MovePieceAtCell(SelectedPiece, SelectedCell);
-            //if ()
-            //{
-                
-            //}
-            //Debug.Log(SelectedPiece.coordinate + " = New Piece Coord");
-            //Debug.Log(SelectedCell.cellCoordinates + " = New Cell Coord");
+            SelectedPiece.Piece.hasPlayed = true;
             SelectedPiece = null;
             SelectedCell = null;
             canSelectPiece = true;
+        }
+
+        if (!SelectedPiece)
+        {
+            foreach (CellHandler cell in cellsList)
+            {
+                cell.gameObject.GetComponent<MeshRenderer>().material.color = Color.white;
+            }
         }
     }
     
     private void MovePieceAtCell(PieceHandler pieceHandler, CellHandler cellHandler) {
         Vector2Int cellCoord = cellHandler.cellCoordinates;
-        Vector2Int pieceCoord = pieceHandler.coordinate;
+        Vector2Int pieceCoord = pieceHandler.Piece.coordinate;
+        
+        //Cas particuliers
         if (Matrix[cellCoord.x, cellCoord.y] != null)
         {
             //manger
             if (Matrix[cellCoord.x, cellCoord.y].Color != Matrix[pieceCoord.x, pieceCoord.y].Color)
-            {
+            { 
                 Matrix[cellCoord.x, cellCoord.y] = null;
             }
             //move impossible
@@ -125,25 +137,44 @@ public class GameManager : MonoBehaviourSingleton<GameManager> {
                 SelectedCell.gameObject.GetComponent<MeshRenderer>().material.color = Color.white;
                 SelectedPiece = null;
                 SelectedCell = null;
-                canSelectPiece = true;
+                //canSelectPiece = true;
                 return;
             }
+            
         }
+        
+        //Deplacement de la value, Destruction du game object visuel
         Matrix[cellCoord.x, cellCoord.y] = Matrix[pieceCoord.x, pieceCoord.y];
         GameObject piecePrefab = SelectedPiece.gameObject;
         Destroy(piecePrefab);
         PieceHandler instantiate = Instantiate(SelectedPiece, piecesParent);
         Vector3 position = new Vector3(cellCoord.x-0.5f, 1, cellCoord.y-0.5f);
         instantiate.transform.position = position;
+        
+        //Couleur Cellule et Piece -> Reset
         SelectedPiece.gameObject.GetComponent<MeshRenderer>().material.color = pieceHandler.originalColor;
-        SelectedCell.gameObject.GetComponent<MeshRenderer>().material.color = Color.white;
-        Debug.Log(Matrix[cellCoord.x,cellCoord.y]);
+        foreach (CellHandler cells in cellsList)
+        {
+            SelectedCell.gameObject.GetComponent<MeshRenderer>().material.color = Color.white;
+            SelectedCell.gameObject.GetComponent<BoxCollider>().enabled = false;
+        }
+        
+        //Vidage de la celle d'origine
         Matrix[pieceCoord.x, pieceCoord.y] = null;
+        
+        //Visuel Mouvment
         foreach (Transform child in piecesParent)
         {
             Destroy(child.gameObject);
         }
+        foreach (CellHandler cell in cellsList)
+        {
+            cell.gameObject.GetComponent<MeshRenderer>().material.color = Color.white;
+        }
+        
         DisplayMatrix();
+        
+        //Changement tour
         if (WhiteTurn)
         {
             WhiteTurn = false;
@@ -153,4 +184,27 @@ public class GameManager : MonoBehaviourSingleton<GameManager> {
             WhiteTurn = true;
         }
     }
+
+    public void EnableCells(List<Vector2Int> movements)
+    {
+        if (movements == null) throw new NullReferenceException("C'est Là");
+        List<CellHandler> cells = cellsList;
+
+        foreach (CellHandler item in cells)
+        {
+            foreach (Vector2Int move in movements)
+            {
+                if (CellHandler.CompareCoordinates(item, move))
+                {
+                    PossibleCells.Add(item);
+                    item.gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
+                    //Debug.Log(PossibleCells);
+                }
+            }
+
+            item.gameObject.GetComponent<BoxCollider>().enabled = item.gameObject.GetComponent<MeshRenderer>().material.color == Color.blue;
+        }
+    }
+    
+    
 }

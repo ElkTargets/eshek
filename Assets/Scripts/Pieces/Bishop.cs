@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Pieces
 {
+    [Serializable]
     public class Bishop : Piece {
     
         public Bishop(Color color) : base(color) { }

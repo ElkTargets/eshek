@@ -1,20 +1,19 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class PieceHandler : MonoBehaviour {
-
-    public Vector2Int coordinate;
+    
+    public Piece Piece;
     
     private Vector3 _initialPosition;
     private static bool _pieceSelected;
     public Color originalColor;
 
-    private void Start() { 
-        coordinate = new Vector2Int((int)transform.localPosition.x, (int)transform.localPosition.z);
+    public void Setup(Piece current) {
+        Piece = current;
+        Piece.coordinate = new Vector2Int((int)transform.localPosition.x, (int)transform.localPosition.z);
     }
-
+    
     private void OnMouseOver() {
         if (GameManager.Instance.WhiteTurn)
         {
@@ -33,18 +32,15 @@ public class PieceHandler : MonoBehaviour {
                 }
             }
         }
+        
         if (Input.GetButtonDown("Fire1") && GameManager.Instance.canSelectPiece) {
             GameManager.Instance.canSelectPiece = false;
             Debug.Log("Selected : " + gameObject);
             GetComponent<MeshRenderer>().material.color = Color.red;
-            // Bouchon à enlever
-            List<Vector2Int> vector2Ints = new List<Vector2Int>();
-            for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
-                    vector2Ints.Add(new Vector2Int(i, j));
-                }
-            }
-            // Fin du bouchon
+            List<Vector2Int> movements = Piece.PossibleMovement(GameManager.Instance.Matrix);
+
+            GameManager.Instance.EnableCells(movements);
+            
             GameManager.Instance.SelectedPiece = this;
         }
 
@@ -60,4 +56,5 @@ public class PieceHandler : MonoBehaviour {
     {
         Destroy(this.gameObject);
     }
+    
 }

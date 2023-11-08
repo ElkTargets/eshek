@@ -24,5 +24,10 @@ public class CellHandler : MonoBehaviour {
             GameManager.Instance.SelectedCell = this;
         }
     }
-    
+
+    public static bool CompareCoordinates(CellHandler otherCell, Vector2Int coordinates)
+    {
+        Vector2Int cellCoords = otherCell.cellCoordinates;
+        return (cellCoords.x == coordinates.x && cellCoords.y == coordinates.y);
+    }
 }
