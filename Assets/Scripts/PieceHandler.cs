@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -32,11 +33,11 @@ public class PieceHandler : MonoBehaviour {
                 }
             }
         }
+        GetComponent<MeshRenderer>().material.color = Color.green;
         
         if (Input.GetButtonDown("Fire1") && GameManager.Instance.canSelectPiece) {
             GameManager.Instance.canSelectPiece = false;
-            Debug.Log("Selected : " + gameObject);
-            GetComponent<MeshRenderer>().material.color = Color.red;
+            //Debug.Log("Selected : " + gameObject);
             List<Vector2Int> movements = Piece.PossibleMovement(GameManager.Instance.Matrix);
 
             GameManager.Instance.EnableCells(movements);
@@ -50,6 +51,11 @@ public class PieceHandler : MonoBehaviour {
             GameManager.Instance.SelectedPiece = null;
             GameManager.Instance.canSelectPiece = true;
         }
+    }
+
+    private void OnMouseExit()
+    {
+        GetComponent<MeshRenderer>().material.color = originalColor;
     }
 
     private void OnDestroy()

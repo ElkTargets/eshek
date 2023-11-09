@@ -98,6 +98,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager> {
     private void Update() {
         if (SelectedPiece)
         {
+            SelectedPiece.GetComponent<MeshRenderer>().material.color = Color.red;
             EnableCells(SelectedPiece.Piece.PossibleMovement(Matrix));
         }
         if (SelectedPiece && SelectedCell) {
@@ -113,7 +114,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager> {
         {
             foreach (CellHandler cell in cellsList)
             {
-                cell.gameObject.GetComponent<MeshRenderer>().material.color = Color.white;
+                cell.gameObject.GetComponent<MeshRenderer>().material.color = new Color(255, 255,255,0);
             }
         }
     }
@@ -134,7 +135,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager> {
             else
             {
                 SelectedPiece.gameObject.GetComponent<MeshRenderer>().material.color = pieceHandler.originalColor;
-                SelectedCell.gameObject.GetComponent<MeshRenderer>().material.color = Color.white;
+                SelectedCell.gameObject.GetComponent<MeshRenderer>().material.color = new Color(255, 255,255,0);
                 SelectedPiece = null;
                 SelectedCell = null;
                 //canSelectPiece = true;
@@ -155,7 +156,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager> {
         SelectedPiece.gameObject.GetComponent<MeshRenderer>().material.color = pieceHandler.originalColor;
         foreach (CellHandler cells in cellsList)
         {
-            SelectedCell.gameObject.GetComponent<MeshRenderer>().material.color = Color.white;
+            SelectedCell.gameObject.GetComponent<MeshRenderer>().material.color = new Color(255, 255,255,0);
             SelectedCell.gameObject.GetComponent<BoxCollider>().enabled = false;
         }
         
@@ -169,7 +170,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager> {
         }
         foreach (CellHandler cell in cellsList)
         {
-            cell.gameObject.GetComponent<MeshRenderer>().material.color = Color.white;
+            cell.gameObject.GetComponent<MeshRenderer>().material.color = new Color(255, 255,255,0);
         }
         
         DisplayMatrix();

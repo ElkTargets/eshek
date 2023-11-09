@@ -13,42 +13,46 @@ namespace Pieces
         public override List<Vector2Int> PossibleMovement(Piece[,] matrix) {
             List<Vector2Int> possiblesMovements = new List<Vector2Int>();
             int direction = (Color == Color.white) ? 1 : -1;
-            // Top move
+            
             Vector2Int topMove = new Vector2Int(coordinate.x, coordinate.y + direction);
             Vector2Int doubleTopMove = new Vector2Int(coordinate.x, coordinate.y + direction*2);
             Vector2Int eatingTopMoveRight = new Vector2Int(coordinate.x + 1, coordinate.y + direction);
             Vector2Int eatingTopMoveLeft = new Vector2Int(coordinate.x - 1, coordinate.y + direction);
 
+            // Top move
             if (matrix[topMove.x, topMove.y] == null)
             {
                 possiblesMovements.Add(topMove);
             }
+            
             // Double Top move
             if (Color == Color.black && coordinate.y == 6 || Color == Color.white && coordinate.y == 1)
             {
                 if (matrix[topMove.x, topMove.y] == null) possiblesMovements.Add(doubleTopMove);
             }
+            
             //Manger
-            if (matrix[eatingTopMoveRight.x, eatingTopMoveRight.y] != null)
+            if (eatingTopMoveRight.x is >= 0 and <= 7 && eatingTopMoveRight.y is >= 0 and <= 7)
             {
-                if (matrix[eatingTopMoveRight.x, eatingTopMoveRight.y].Color != Color)
+                if (matrix[eatingTopMoveRight.x, eatingTopMoveRight.y] != null)
                 {
-                    possiblesMovements.Add(eatingTopMoveRight);
+                    if (matrix[eatingTopMoveRight.x, eatingTopMoveRight.y].Color != Color)
+                    {
+                        possiblesMovements.Add(eatingTopMoveRight);
+                    }
                 }
-                
             }
-            if (matrix[eatingTopMoveLeft.x, eatingTopMoveLeft.y] != null)
+            if (eatingTopMoveLeft.x is >= 0 and <= 7 && eatingTopMoveLeft.y is >= 0 and <= 7 )
             {
-                if (matrix[eatingTopMoveLeft.x, eatingTopMoveLeft.y].Color != Color)
+                if (matrix[eatingTopMoveLeft.x, eatingTopMoveLeft.y] != null)
                 {
-                    possiblesMovements.Add(eatingTopMoveLeft);
+                    if (matrix[eatingTopMoveLeft.x, eatingTopMoveLeft.y].Color != Color)
+                    { 
+                        possiblesMovements.Add(eatingTopMoveLeft);
+                    }
                 }
-                
             }
             
-            
-            //possiblesMovements.Add(new Vector2Int(coordinate.x, coordinate.y + direction));
-            //possiblesMovements.Add(new Vector2Int(coordinate.x, coordinate.y + direction*2));
             return possiblesMovements;
         }
 

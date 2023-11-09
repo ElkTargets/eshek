@@ -121,7 +121,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95f5f64259284c9b92e073c6863d25c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coordinate: {x: 0, y: 0}
   originalColor: {r: 1, g: 0.8901961, b: 0.6666667, a: 0}
 --- !u!199 &-8344719079230470579
 ParticleSystemRenderer:
