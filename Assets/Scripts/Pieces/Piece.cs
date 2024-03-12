@@ -5,13 +5,14 @@ using UnityEngine;
 namespace Pieces
 {
     [Serializable]
-    public abstract class Piece {
+    public abstract class Piece : ICloneable {
     
         public Color Color { get; }
+        
         public Vector2Int coordinate;
         public bool hasPlayed;
         public int score;
-    
+        
         public abstract int Score { get; }
         
         protected Piece(Color color) {
@@ -24,7 +25,11 @@ namespace Pieces
         {
             return x >= 0 && x <= 7 && y >= 0 && y <= 7;
         }
-    
-    
+
+        public object Clone()
+        {
+            // Shallow copy
+            return MemberwiseClone();
+        }
     }
 }

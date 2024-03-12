@@ -41,7 +41,7 @@ namespace Handlers
             if (Input.GetButtonDown("Fire1") && GameManager.Instance.canSelectPiece) {
                 GameManager.Instance.canSelectPiece = false;
                 //Debug.Log("Selected : " + gameObject);
-                List<Vector2Int> movements = Piece.PossibleMovement(GameManager.Instance.BoardMatrix);
+                List<Vector2Int> movements = Piece.PossibleMovement(GameManager.Instance.BoardMatrix.Pieces);
 
                 GameManager.Instance.EnableCells(movements);
             

@@ -12,7 +12,7 @@ namespace Managers
         public List<CellHandler> cellsList;
         public Transform cellsParent;
         public Transform piecesParent;
-        [SerializeField] public Piece[,] BoardMatrix;
+        [SerializeField] public /*Piece[,]*/ Board BoardMatrix;
         [SerializeField] private GameObject cellPrefab;
         public GameObject WhiteRookPrefab;
         public GameObject BlackRookPrefab;
@@ -44,19 +44,37 @@ namespace Managers
         {
             FirstTurn = true;
             PossibleCells = new List<CellHandler>();
-            // Remplir matrice
-            BoardMatrix = new Piece[8, 8]
-            { 
-                {new Rook(Color.white), new Pawn(Color.white),null,null,null,null,new Pawn(Color.black),new Rook(Color.black)},
-                {new Knight(Color.white), new Pawn(Color.white),null,null,null,null,new Pawn(Color.black),new Knight(Color.black)},
-                {new Bishop(Color.white),new Pawn(Color.white),null,null,null,null, new Pawn(Color.black),new Bishop(Color.black)},
-                {new Queen(Color.white),new Pawn(Color.white),null,null,null,null, new Pawn(Color.black),new Queen(Color.black)},
-                {new King(Color.white),new Pawn(Color.white),null,null,null,null, new Pawn(Color.black),new King(Color.black)},
-                {new Bishop(Color.white), new Pawn(Color.white),null,null,null,null, new Pawn(Color.black),new Bishop(Color.black)},
-                {new Knight(Color.white), new Pawn(Color.white),null,null,null,null,new Pawn(Color.black),new Knight(Color.black)},
-                {new Rook(Color.white), new Pawn(Color.white),null,null,null,null,new Pawn(Color.black),new Rook(Color.black)},
-            };
-        
+            // Remplir matrix
+            BoardMatrix = new Board();
+            BoardMatrix.SetupDefaultBoard();
+
+            //****************************************************************
+            
+            
+            /*
+            Piece[,] newMatrix = new Piece[8, 8];
+            for (int i = 0; i < BoardMatrix.Pieces.GetLength(0); i++)
+            {
+                for (int j = 0; j < BoardMatrix.Pieces.GetLength(1); j++)
+                {
+                    newMatrix[i, j] = (Piece) BoardMatrix.Pieces[i, j].Clone();
+                }
+            }
+
+            foreach (Piece piece in BoardMatrix.Pieces)
+            {
+                newMatrix[piece.coordinate.x, piece.coordinate.y] = (Piece) piece.Clone();
+            }
+
+            Board newBoard = (Board) boardMatrix.Clone();
+            
+            Piece[,] childBoard = (Piece[,]) BoardMatrix.Clone();
+            Piece pieceToMove = BoardMatrix[7, 0];
+            BoardMatrix[5, 0] = pieceToMove;
+            BoardMatrix[7, 0] = null;
+            //******************************************************************
+            */
+            
             cellsList = new List<CellHandler>(cellsParent.GetComponentsInChildren<CellHandler>());
             DisplayMatrix();
             canSelectPiece = true;
@@ -68,7 +86,7 @@ namespace Managers
             // Affiche la matrice sur le board
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
-                    Piece current = BoardMatrix[i, j];
+                    Piece current = BoardMatrix.Pieces[i, j];
                     Vector3 position = new Vector3(i,0,j);
                 
                     GameObject piecePrefab = GetPiecePrefab(current);
@@ -77,7 +95,6 @@ namespace Managers
                         instantiate.transform.localPosition = position;
                         instantiate.GetComponent<PieceHandler>().Setup(current);
                     }
-                    //Debug.Log(_kings.Count);
                 }
             }
         }
@@ -112,7 +129,7 @@ namespace Managers
             if (SelectedPiece)
             {
                 SelectedPiece.GetComponent<MeshRenderer>().material.color = Color.red;
-                EnableCells(SelectedPiece.Piece.PossibleMovement(BoardMatrix));
+                EnableCells(SelectedPiece.Piece.PossibleMovement(BoardMatrix.Pieces));
             }
             if (SelectedPiece && SelectedCell) {
             
@@ -156,12 +173,12 @@ namespace Managers
             Vector2Int pieceCoord = pieceHandler.Piece.coordinate;
         
             //Cas particuliers
-            if (BoardMatrix[cellCoord.x, cellCoord.y] != null)
+            if (BoardMatrix.Pieces[cellCoord.x, cellCoord.y] != null)
             {
                 //manger
-                if (BoardMatrix[cellCoord.x, cellCoord.y].Color != BoardMatrix[pieceCoord.x, pieceCoord.y].Color)
+                if (BoardMatrix.Pieces[cellCoord.x, cellCoord.y].Color != BoardMatrix.Pieces[pieceCoord.x, pieceCoord.y].Color)
                 { 
-                    BoardMatrix[cellCoord.x, cellCoord.y] = null;
+                    BoardMatrix.Pieces[cellCoord.x, cellCoord.y] = null;
                 }
                 //move impossible
                 else
@@ -177,7 +194,7 @@ namespace Managers
             }
         
             //Deplacement de la value, Destruction du game object visuel
-            BoardMatrix[cellCoord.x, cellCoord.y] = BoardMatrix[pieceCoord.x, pieceCoord.y];
+            BoardMatrix.Pieces[cellCoord.x, cellCoord.y] = BoardMatrix.Pieces[pieceCoord.x, pieceCoord.y];
             GameObject piecePrefab = SelectedPiece.gameObject;
             Destroy(piecePrefab);
             PieceHandler instantiate = Instantiate(SelectedPiece, piecesParent);
@@ -193,7 +210,7 @@ namespace Managers
             }
         
             //Vidage de la cell d'origine
-            BoardMatrix[pieceCoord.x, pieceCoord.y] = null;
+            BoardMatrix.Pieces[pieceCoord.x, pieceCoord.y] = null;
         
             //Visuel Mouvment
             foreach (Transform child in piecesParent)
