@@ -6,7 +6,9 @@ namespace Pieces
 {
     [Serializable]
     public class Bishop : Piece {
-    
+        
+        public override int Score => 3;
+        
         public Bishop(Color color) : base(color) { }
 
         public override List<Vector2Int> PossibleMovement(Piece[,] matrix)

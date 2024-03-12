@@ -6,18 +6,19 @@ namespace Pieces
 {
     [Serializable]
     public class Queen : Piece {
-    
+        
+        public override int Score => 9;
+        
         public Queen(Color color) : base(color) { }
+        
         public override List<Vector2Int> PossibleMovement(Piece[,] matrix)
         {
             List<Vector2Int> possibleMovements = new List<Vector2Int>();
 
             //Haut
-            for (int i = 1; i <= 7; i++)
-            {
+            for (int i = 1; i <= 7; i++) {
                 Vector2Int topMove = new Vector2Int(coordinate.x, coordinate.y + i);
-                if (topMove.x is >= 0 and <= 7 && topMove.y is >= 0 and <= 7)
-                {
+                if (topMove.x is >= 0 and <= 7 && topMove.y is >= 0 and <= 7) {
                     if (matrix[topMove.x, topMove.y] != null) break;
                     if (matrix[topMove.x, topMove.y] == null)
                     {
@@ -26,16 +27,12 @@ namespace Pieces
                 }
             }
             //Haut Manger
-            for (int i = 1; i <= 7; i++)
-            {
+            for (int i = 1; i <= 7; i++) {
                 Vector2Int eatingTopMove = new Vector2Int(coordinate.x, coordinate.y + i);
-                if (eatingTopMove.x is >= 0 and <= 7 && eatingTopMove.y is >= 0 and <= 7)
-                {
-                    if (matrix[eatingTopMove.x, eatingTopMove.y] != null)
-                    {
+                if (eatingTopMove.x is >= 0 and <= 7 && eatingTopMove.y is >= 0 and <= 7) {
+                    if (matrix[eatingTopMove.x, eatingTopMove.y] != null) {
                         if (matrix[eatingTopMove.x, eatingTopMove.y].Color == Color) break;
-                        if (matrix[eatingTopMove.x, eatingTopMove.y].Color != Color)
-                        {
+                        if (matrix[eatingTopMove.x, eatingTopMove.y].Color != Color) {
                             possibleMovements.Add(eatingTopMove);
                             break;
                         }
@@ -44,29 +41,22 @@ namespace Pieces
             }
             
             //Bas
-            for (int i = 1; i <= 7; i++)
-            {
+            for (int i = 1; i <= 7; i++) {
                 Vector2Int downMove = new Vector2Int(coordinate.x, coordinate.y - i);
-                if (downMove.x is >= 0 and <= 7 && downMove.y is >= 0 and <= 7)
-                {
+                if (downMove.x is >= 0 and <= 7 && downMove.y is >= 0 and <= 7) {
                     if (matrix[downMove.x, downMove.y] != null) break;
-                    if (matrix[downMove.x, downMove.y] == null)
-                    {
+                    if (matrix[downMove.x, downMove.y] == null) {
                         possibleMovements.Add(downMove);
                     }
                 }
             }
             //Bas Manger
-            for (int i = 1; i <= 7; i++)
-            {
+            for (int i = 1; i <= 7; i++) {
                 Vector2Int eatingDownMove = new Vector2Int(coordinate.x, coordinate.y - i);
-                if (eatingDownMove.x is >= 0 and <= 7 && eatingDownMove.y is >= 0 and <= 7)
-                {
-                    if (matrix[eatingDownMove.x, eatingDownMove.y] != null)
-                    {
+                if (eatingDownMove.x is >= 0 and <= 7 && eatingDownMove.y is >= 0 and <= 7) {
+                    if (matrix[eatingDownMove.x, eatingDownMove.y] != null) {
                         if (matrix[eatingDownMove.x, eatingDownMove.y].Color == Color) break;
-                        if (matrix[eatingDownMove.x, eatingDownMove.y].Color != Color)
-                        {
+                        if (matrix[eatingDownMove.x, eatingDownMove.y].Color != Color) {
                             possibleMovements.Add(eatingDownMove);
                             break;
                         }

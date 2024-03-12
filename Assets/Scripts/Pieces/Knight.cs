@@ -6,9 +6,11 @@ namespace Pieces
 {
     [Serializable]
     public class Knight : Piece {
-    
+        
+        public override int Score => 3;
+        
         public Knight(Color color) : base(color) { }
-
+        
         public override List<Vector2Int> PossibleMovement(Piece[,] matrix)
         {
             List<Vector2Int> possibleMovements = new List<Vector2Int>();
