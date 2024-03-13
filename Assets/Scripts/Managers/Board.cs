@@ -1,6 +1,7 @@
 using System;
 using Handlers;
 using Pieces;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Managers
@@ -30,13 +31,14 @@ namespace Managers
 
         public object Clone()
         {
-            Board newBoard = new Board();
-            newBoard.Pieces = new Piece[8, 8];
+            Board newBoard = new Board { Pieces = new Piece[8, 8] };
             foreach (Piece piece in Pieces)
             {
-                newBoard.Pieces[piece.coordinate.x, piece.coordinate.y] = (Piece) piece.Clone();
+                newBoard.Pieces[piece.coordinate.x, piece.coordinate.y] = (Piece)piece.Clone();
             }
+
             return newBoard;
         }
+        
     }
 }

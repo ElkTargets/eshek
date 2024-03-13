@@ -6,23 +6,25 @@ namespace Managers.Minimax
 {
     public class Node
     {
-
-        public Piece[,] NodeMatrix;
+        private readonly Piece[,] _nodeMatrix;
+        public int PiecesScore;
         
         public Node(Piece[,] boardMatrix)
         {
-            NodeMatrix = boardMatrix;
+            _nodeMatrix = boardMatrix;
         }
 
-        public void GetHeuristicValue()
+        public int GetHeuristicValue()
         {
-            foreach (Piece piece in NodeMatrix)
+            foreach (Piece piece in _nodeMatrix)
             {
                 if (piece != null)
                 {
-                    
+                    PiecesScore += piece.score;
                 }
             }
+
+            return PiecesScore;
         }
     }
 }

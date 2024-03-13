@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Handlers;
+using Managers.Minimax;
 using Pieces;
 using UnityEngine;
 using Utils;
@@ -51,29 +52,23 @@ namespace Managers
             //****************************************************************
             
             
-            /*
-            Piece[,] newMatrix = new Piece[8, 8];
+            
+            /*Piece[,] newMatrix = new Piece[8, 8];
             for (int i = 0; i < BoardMatrix.Pieces.GetLength(0); i++)
             {
                 for (int j = 0; j < BoardMatrix.Pieces.GetLength(1); j++)
                 {
                     newMatrix[i, j] = (Piece) BoardMatrix.Pieces[i, j].Clone();
                 }
-            }
+            }*/
 
-            foreach (Piece piece in BoardMatrix.Pieces)
-            {
-                newMatrix[piece.coordinate.x, piece.coordinate.y] = (Piece) piece.Clone();
-            }
+            
 
-            Board newBoard = (Board) boardMatrix.Clone();
+            
             
             Piece[,] childBoard = (Piece[,]) BoardMatrix.Clone();
-            Piece pieceToMove = BoardMatrix[7, 0];
-            BoardMatrix[5, 0] = pieceToMove;
-            BoardMatrix[7, 0] = null;
             //******************************************************************
-            */
+            
             
             cellsList = new List<CellHandler>(cellsParent.GetComponentsInChildren<CellHandler>());
             DisplayMatrix();
@@ -133,7 +128,7 @@ namespace Managers
             }
             if (SelectedPiece && SelectedCell) {
             
-                MovePieceAtCell(SelectedPiece, SelectedCell);
+                MovePieceAtCell(SelectedPiece, SelectedCell, BoardMatrix);
                 SelectedPiece.Piece.hasPlayed = true;
                 SelectedPiece = null;
                 SelectedCell = null;
@@ -168,17 +163,17 @@ namespace Managers
             }
         }
     
-        private void MovePieceAtCell(PieceHandler pieceHandler, CellHandler cellHandler) {
+        public void MovePieceAtCell(PieceHandler pieceHandler, CellHandler cellHandler, Board boardMatrix) {
             Vector2Int cellCoord = cellHandler.cellCoordinates;
             Vector2Int pieceCoord = pieceHandler.Piece.coordinate;
         
             //Cas particuliers
-            if (BoardMatrix.Pieces[cellCoord.x, cellCoord.y] != null)
+            if (boardMatrix.Pieces[cellCoord.x, cellCoord.y] != null)
             {
                 //manger
-                if (BoardMatrix.Pieces[cellCoord.x, cellCoord.y].Color != BoardMatrix.Pieces[pieceCoord.x, pieceCoord.y].Color)
+                if (boardMatrix.Pieces[cellCoord.x, cellCoord.y].Color != boardMatrix.Pieces[pieceCoord.x, pieceCoord.y].Color)
                 { 
-                    BoardMatrix.Pieces[cellCoord.x, cellCoord.y] = null;
+                    boardMatrix.Pieces[cellCoord.x, cellCoord.y] = null;
                 }
                 //move impossible
                 else
@@ -194,7 +189,7 @@ namespace Managers
             }
         
             //Deplacement de la value, Destruction du game object visuel
-            BoardMatrix.Pieces[cellCoord.x, cellCoord.y] = BoardMatrix.Pieces[pieceCoord.x, pieceCoord.y];
+            boardMatrix.Pieces[cellCoord.x, cellCoord.y] = boardMatrix.Pieces[pieceCoord.x, pieceCoord.y];
             GameObject piecePrefab = SelectedPiece.gameObject;
             Destroy(piecePrefab);
             PieceHandler instantiate = Instantiate(SelectedPiece, piecesParent);
@@ -210,7 +205,7 @@ namespace Managers
             }
         
             //Vidage de la cell d'origine
-            BoardMatrix.Pieces[pieceCoord.x, pieceCoord.y] = null;
+            boardMatrix.Pieces[pieceCoord.x, pieceCoord.y] = null;
         
             //Visuel Mouvment
             foreach (Transform child in piecesParent)
