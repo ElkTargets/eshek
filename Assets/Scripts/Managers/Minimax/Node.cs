@@ -11,10 +11,11 @@ namespace Managers.Minimax
         public Color TurnColor;
         public Board CurrentBoard;
 
-        public Node(Board board, Color ownerColor)
+        public Node(Board board, Color ownerColor, Color turnColor)
         {
             CurrentBoard = board;
             OwnerColor = ownerColor;
+            TurnColor = turnColor;
         }
 
         public List<Node> GetChilds()
@@ -28,8 +29,8 @@ namespace Managers.Minimax
                 foreach (Vector2Int move in piece.PossibleMovement(CurrentBoard.Pieces)) {
                     Board nextBoard = (Board) CurrentBoard.Clone();
                     nextBoard.MovePiece(piece, move);
-                    OwnerColor = OwnerColor == Color.white ? Color.black : Color.white;
-                    nodes.Add(new Node(nextBoard, OwnerColor));
+                    Color otherTurnColor = TurnColor == Color.white ? Color.black : Color.white;
+                    nodes.Add(new Node(nextBoard, OwnerColor, otherTurnColor));
                 }
             }
             return nodes;
@@ -44,10 +45,6 @@ namespace Managers.Minimax
         {
             return CurrentBoard.GetHeuristicValue(TurnColor);
         }
-        
-        }
-
-        
         
     }
 }

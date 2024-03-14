@@ -19,7 +19,7 @@ namespace Managers
             _isThinking = true;
             if (GameManager.Instance.WhiteTurn) { playerTurn = Color.white; }
             else { playerTurn = Color.black; }
-            Node startingNode = new Node(GameManager.Instance.BoardMatrix, playerTurn);
+            Node startingNode = new Node(GameManager.Instance.BoardMatrix, playerTurn, playerTurn);
             MinMax(startingNode, depth, true); 
             //PlayTurn();
         }
