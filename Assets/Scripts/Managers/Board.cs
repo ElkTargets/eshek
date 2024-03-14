@@ -31,6 +31,7 @@ namespace Managers
             { 
                 Pieces[cell.x, cell.y] = null;
             }
+            //move
             Pieces[cell.x, cell.y] = Pieces[piece.coordinate.x, piece.coordinate.y];
             Pieces[piece.coordinate.x, piece.coordinate.y] = null;
         }
@@ -41,7 +42,10 @@ namespace Managers
             foreach (Piece piece in Pieces)
             {
                 if (piece == null) continue;
-                heuristicValue += piece.Score;
+                if (piece.Color != turnColor)
+                {
+                    heuristicValue += piece.Score;
+                }
             }
             Debug.Log(heuristicValue);
             return heuristicValue;
@@ -57,7 +61,7 @@ namespace Managers
             foreach (Piece piece in Pieces)
             {
                 if (piece == null) continue;
-                newBoard.Pieces[piece.coordinate.x, piece.coordinate.y] = (Piece)piece.Clone();
+                newBoard.Pieces[piece.coordinate.x, piece.coordinate.y] = (Piece) piece.Clone();
 
             }
 

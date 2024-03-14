@@ -38,6 +38,8 @@ namespace Managers
         public PieceHandler SelectedPiece { get; set; }
         public CellHandler SelectedCell { get; set; }
         public List<CellHandler> PossibleCells { get; set; }
+
+        public bool MinMaxEnabled;
         //public List<King> _kings { get; set; } = new List<King>();
 
 
@@ -160,6 +162,11 @@ namespace Managers
                 Plateau.GetComponent<Animator>().SetBool("BlackTurn", true);
                 LnAWhite.SetActive(false);
                 LnABlack.SetActive(true);
+                if (MinMaxEnabled)
+                {
+                    MinimaxManager.Instance.Think();
+                }
+                
             }
         }
     
