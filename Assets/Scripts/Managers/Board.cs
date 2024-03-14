@@ -1,7 +1,5 @@
 using System;
-using Handlers;
 using Pieces;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Managers
@@ -9,9 +7,7 @@ namespace Managers
     [Serializable]
     public class Board : ICloneable
     {
-        public Piece[,] Pieces; 
-        
-        public Board() { }
+        public Piece[,] Pieces;
 
         public void SetupDefaultBoard()
         {
@@ -28,13 +24,41 @@ namespace Managers
             };
         }
 
-
-        public object Clone()
+        public void MovePiece(Piece piece, Vector2Int cell)
         {
-            Board newBoard = new Board { Pieces = new Piece[8, 8] };
+            //manger
+            if (Pieces[cell.x, cell.y].Color != Pieces[piece.coordinate.x, piece.coordinate.y].Color)
+            { 
+                Pieces[cell.x, cell.y] = null;
+            }
+            Pieces[cell.x, cell.y] = Pieces[piece.coordinate.x, piece.coordinate.y];
+            Pieces[piece.coordinate.x, piece.coordinate.y] = null;
+        }
+
+        public int GetHeuristicValue(Color turnColor)
+        {
+            int heuristicValue = 0;
             foreach (Piece piece in Pieces)
             {
+                if (piece == null) continue;
+                heuristicValue += piece.Score;
+            }
+            Debug.Log(heuristicValue);
+            return heuristicValue;
+        }
+        
+        public object Clone()
+        {
+            Board newBoard = new Board
+            {
+                Pieces = new Piece[8, 8]
+            };
+            
+            foreach (Piece piece in Pieces)
+            {
+                if (piece == null) continue;
                 newBoard.Pieces[piece.coordinate.x, piece.coordinate.y] = (Piece)piece.Clone();
+
             }
 
             return newBoard;

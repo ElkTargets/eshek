@@ -1,43 +1,36 @@
 using System;
 using Managers.Minimax;
 using UnityEngine;
-using Pieces;
-using UnityEngine.Serialization;
 using Utils;
 
 
 namespace Managers
 {
-    public class MinimaxManager : MonoBehaviourSingleton<GameManager>
+    public class MinimaxManager : MonoBehaviourSingleton<MinimaxManager>
     {
         public int depth;
-        public GameManager gameManager;
-        
-        void Start()
+        public Color PlayerTurn;
+
+        [ContextMenu("Think")]
+        public void Think()
+        {
+            if (GameManager.Instance.WhiteTurn) { PlayerTurn = Color.white; }
+            else { PlayerTurn = Color.black; }
+            Node startingNode = new Node(GameManager.Instance.BoardMatrix, PlayerTurn);
+            MinMax(startingNode, depth, true);
+        }
+
+        private void MinMax(Node node, int depth, bool maximizingPlayer)
         {
             
         }
 
-        [ContextMenu("New Node")]
-        private void NewNode()
-        {
-            foreach (Piece piece in gameManager.BoardMatrix.Pieces) {
-                foreach (Vector2Int move in piece.PossibleMovement(gameManager.BoardMatrix.Pieces))
-                {
-                    Piece[,] newBoard = (Piece[,]) gameManager.BoardMatrix.Clone();
-                    newBoard = MoveThePiece(piece, move, newBoard);
-                    Node newNode = new Node(newBoard);
-                    int test = newNode.GetHeuristicValue();
-                    Debug.Log(test);
-                }
-            }
-        }
-
-        private Piece[,] MoveThePiece(Piece piece, Vector2Int cell, Piece[,] boardMatrix)
+        /*private Piece[,] MoveThePiece(Piece piece, Vector2Int cell, b boardMatrix)
         {
             boardMatrix[cell.x, cell.y] = boardMatrix[piece.coordinate.x, piece.coordinate.y];
             boardMatrix[piece.coordinate.x, piece.coordinate.y] = null;
             return boardMatrix;
-        }
+        }*/
+        
     }
 }

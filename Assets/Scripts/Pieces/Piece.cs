@@ -11,7 +11,7 @@ namespace Pieces
         
         public Vector2Int coordinate;
         public bool hasPlayed;
-        public int score;
+        
         
         public abstract int Score { get; }
         

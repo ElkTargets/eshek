@@ -66,7 +66,7 @@ namespace Managers
 
             
             
-            Piece[,] childBoard = (Piece[,]) BoardMatrix.Clone();
+            //Piece[,] childBoard = (Piece[,]) BoardMatrix.Clone();
             //******************************************************************
             
             
