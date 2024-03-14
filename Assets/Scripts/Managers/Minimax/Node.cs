@@ -28,12 +28,13 @@ namespace Managers.Minimax
                 foreach (Vector2Int move in piece.PossibleMovement(CurrentBoard.Pieces)) {
                     Board nextBoard = (Board) CurrentBoard.Clone();
                     nextBoard.MovePiece(piece, move);
-                    nodes.Add(new Node(nextBoard, ChangeOwner()));
+                    OwnerColor = OwnerColor == Color.white ? Color.black : Color.white;
+                    nodes.Add(new Node(nextBoard, OwnerColor));
                 }
             }
             return nodes;
         }
-
+        
         public bool IsTerminal()
         {
             return GetChilds().Count == 0;
@@ -43,23 +44,7 @@ namespace Managers.Minimax
         {
             return CurrentBoard.GetHeuristicValue(TurnColor);
         }
-
-        private Color ChangeOwner()
-        {
-            if (OwnerColor == Color.white)
-            {
-                OwnerColor = Color.black;
-            }
-            else if (OwnerColor == Color.black)
-            {
-                OwnerColor = Color.white;
-            }
-            else
-            {
-                Debug.LogError("Not normal color.");
-            }
-
-            return OwnerColor;
+        
         }
 
         
