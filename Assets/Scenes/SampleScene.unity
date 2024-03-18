@@ -4099,10 +4099,13 @@ MonoBehaviour:
   BlackPawnPrefab: {fileID: 6928302175886692718, guid: cd44d7a0befdeca459a6b376b5e2e810,
     type: 3}
   Plateau: {fileID: 692679209}
+  FirstTurn: 0
   LnAWhite: {fileID: 87581662}
   LnABlack: {fileID: 797752979}
   WhiteTurn: 0
   canSelectPiece: 0
+  PiecesGameObject: []
+  MinMaxEnabled: 1
 --- !u!4 &435973899
 Transform:
   m_ObjectHideFlags: 0
@@ -4130,8 +4133,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 033f708d74ce11d4d86856aeb6fa38aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  depth: 0
-  gameManager: {fileID: 0}
+  depth: 2
+  playerTurn: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &436449571
 GameObject:
   m_ObjectHideFlags: 0

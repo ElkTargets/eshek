@@ -1,7 +1,9 @@
+using System;
 using Managers.Minimax;
 using Pieces;
 using UnityEngine;
 using Utils;
+using Random = UnityEngine.Random;
 
 
 namespace Managers
@@ -19,13 +21,22 @@ namespace Managers
             _isThinking = true;
             if (GameManager.Instance.WhiteTurn) { playerTurn = Color.white; }
             else { playerTurn = Color.black; }
+            Debug.Log("Starting Minimax");
             Node startingNode = new Node(GameManager.Instance.BoardMatrix, playerTurn, playerTurn);
-            MinMax(startingNode, depth, true); 
-            //PlayTurn();
+            Node bestChild = null;
+            foreach (Node child in startingNode.GetChilds())
+            {
+                MinMax(startingNode, depth, true);
+                if (bestChild == null || child.GetHeuristic() > bestChild.GetHeuristic())
+                    bestChild = child;
+                else if (child.GetHeuristic() == bestChild.GetHeuristic() && Random.Range(0f, 1f) > 0.5)
+                    bestChild = child;
+            }
+            PlayTurn(new Node(bestChild.CurrentBoard, bestChild.OwnerColor, bestChild.TurnColor));
         }
 
         private float MinMax(Node node, int minMaxDepth, bool maximizingPlayer) {
-            Debug.Log(minMaxDepth);
+            //Debug.Log(minMaxDepth);
             if (minMaxDepth == 0 || node.IsTerminal()) return node.GetHeuristic();
             float minMaxValue;
             if (maximizingPlayer) {
@@ -45,9 +56,26 @@ namespace Managers
             return minMaxValue;
         }
 
-        /*private void PlayTurn(Board realBoard)
+        private void PlayTurn(Node bestChild)
         {
-            GameManager.Instance.
-        }*/
+            GameManager.Instance.BoardMatrix = bestChild.CurrentBoard;
+            foreach (GameObject pieceGameObject in GameManager.Instance.PiecesGameObject)
+            {
+                Destroy(pieceGameObject);
+            }
+            GameManager.Instance.DisplayMatrix();
+            GameManager.Instance.FirstTurn = false;
+            //Changement tour
+            switch (GameManager.Instance.WhiteTurn)
+            {
+                case true:
+                    GameManager.Instance.WhiteTurn = false;
+                    break;
+                case false:
+                    GameManager.Instance.WhiteTurn = true;
+                    break;
+            }
+            _isThinking = false;
+        }
     }
 }

@@ -63,7 +63,7 @@ namespace Handlers
 
         private void OnDestroy()
         {
-            Destroy(this.gameObject);
+            GameManager.Instance.PiecesGameObject.Remove(this.gameObject);
         }
     
     }

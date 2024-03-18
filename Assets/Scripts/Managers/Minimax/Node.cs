@@ -28,7 +28,7 @@ namespace Managers.Minimax
                 
                 foreach (Vector2Int move in piece.PossibleMovement(CurrentBoard.Pieces)) {
                     Board nextBoard = (Board) CurrentBoard.Clone();
-                    nextBoard.MovePiece(piece, move);
+                    nextBoard.MovePiece(piece, new Vector2Int(move.x, move.y));
                     Color otherTurnColor = TurnColor == Color.white ? Color.black : Color.white;
                     nodes.Add(new Node(nextBoard, OwnerColor, otherTurnColor));
                 }

@@ -27,13 +27,19 @@ namespace Managers
         public void MovePiece(Piece piece, Vector2Int cell)
         {
             //manger
-            if (Pieces[cell.x, cell.y].Color != Pieces[piece.coordinate.x, piece.coordinate.y].Color)
+            if (Pieces[cell.x, cell.y].Color != Pieces[piece.coordinate.x, piece.coordinate.y].Color && Pieces[cell.x, cell.y]!= null)
             { 
+                Pieces[cell.x, cell.y] = Pieces[piece.coordinate.x, piece.coordinate.y];
+                Pieces[piece.coordinate.x, piece.coordinate.y] = null;
                 Pieces[cell.x, cell.y] = null;
             }
+            else
+            {
+                Pieces[cell.x, cell.y] = Pieces[piece.coordinate.x, piece.coordinate.y];
+                Pieces[piece.coordinate.x, piece.coordinate.y] = null;
+            }
             //move
-            Pieces[cell.x, cell.y] = Pieces[piece.coordinate.x, piece.coordinate.y];
-            Pieces[piece.coordinate.x, piece.coordinate.y] = null;
+            
         }
 
         public int GetHeuristicValue(Color turnColor)

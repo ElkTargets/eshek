@@ -29,7 +29,7 @@ namespace Managers
         public GameObject BlackPawnPrefab;
 
         public GameObject Plateau;
-        private bool FirstTurn;
+        public bool FirstTurn;
         public GameObject LnAWhite;
         public GameObject LnABlack;
 
@@ -38,7 +38,7 @@ namespace Managers
         public PieceHandler SelectedPiece { get; set; }
         public CellHandler SelectedCell { get; set; }
         public List<CellHandler> PossibleCells { get; set; }
-
+        public List<GameObject> PiecesGameObject = new List<GameObject>();
         public bool MinMaxEnabled;
         //public List<King> _kings { get; set; } = new List<King>();
 
@@ -50,37 +50,17 @@ namespace Managers
             // Remplir matrix
             BoardMatrix = new Board();
             BoardMatrix.SetupDefaultBoard();
-
-            //****************************************************************
-            
-            
-            
-            /*Piece[,] newMatrix = new Piece[8, 8];
-            for (int i = 0; i < BoardMatrix.Pieces.GetLength(0); i++)
-            {
-                for (int j = 0; j < BoardMatrix.Pieces.GetLength(1); j++)
-                {
-                    newMatrix[i, j] = (Piece) BoardMatrix.Pieces[i, j].Clone();
-                }
-            }*/
-
-            
-
-            
-            
-            //Piece[,] childBoard = (Piece[,]) BoardMatrix.Clone();
-            //******************************************************************
-            
-            
             cellsList = new List<CellHandler>(cellsParent.GetComponentsInChildren<CellHandler>());
             DisplayMatrix();
             canSelectPiece = true;
             WhiteTurn = true;
             LnABlack.SetActive(false);
+            PiecesGameObject.Clear();
         }
 
-        private void DisplayMatrix() {
+        public void DisplayMatrix() {
             // Affiche la matrice sur le board
+            PiecesGameObject.Clear();
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
                     Piece current = BoardMatrix.Pieces[i, j];
@@ -91,6 +71,7 @@ namespace Managers
                         GameObject instantiate = Instantiate(piecePrefab, piecesParent);
                         instantiate.transform.localPosition = position;
                         instantiate.GetComponent<PieceHandler>().Setup(current);
+                        PiecesGameObject.Add(instantiate);
                     }
                 }
             }
